@@ -1,14 +1,14 @@
 @echo off
 
-REM ÉèÖÃNginxºÍPHP-CGIµÄÄ¿Â¼ºÍwwwÎÄ¼ş¼Ğ
+REM è®¾ç½®Nginxå’ŒPHP-CGIçš„ç›®å½•å’Œwwwæ–‡ä»¶å¤¹
 SET php_home=.\php-7.4.8-nts-Win32-vc15-x64
 SET nginx_home=.
 SET www=.\html
 SET php_port=9000
 
-REM Çë²»ÒªĞŞ¸ÄÕâ¸öÏîÄ¿
+REM è¯·ä¸è¦ä¿®æ”¹è¿™ä¸ªé¡¹ç›®
 SET tempFile=.temp.txt
-SET version=1.3.1
+SET version=1.3.3
 
 REM parameter handle
 if "%1"=="start" (	
@@ -20,6 +20,10 @@ if "%1"=="stop" (
 	call :stop_all
 	exit
 )
+
+
+title nginxæ“æ§é¢æ¿ v%version%
+mode con cols=80 lines=25
 
 :menu
 set phpcgiRunning=
@@ -33,41 +37,39 @@ set /p nginxRunning=<%tempFile%
 
 del %tempFile%
 
-title nginxºÍphp-cgi¿ØÖÆÃæ°å v%version%
 
-cls
 echo   __________________________________________
 echo  ^|                                          ^|
 
 if "%nginxRunning%" NEQ "" (
-	echo  ^|      [   NGINX    ÕıÔÚÔËĞĞ  ]            ^|
+	echo  ^|      [   NGINX    æ­£åœ¨è¿è¡Œ  ]            ^|
 ) else (
 	echo  ^|      [   NGINX    ---       ]            ^|
 )
 
 if "%phpcgiRunning%" NEQ "" (
-	echo  ^|      [   PHP-CGI  ÕıÔÚÔËĞĞ  ]            ^|
+	echo  ^|      [   PHP-CGI  æ­£åœ¨è¿è¡Œ  ]            ^|
 ) else (
 	echo  ^|      [   PHP-CGI  ---       ]            ^|
 )
 
 echo  ^|                                          ^|
-echo  ^|     www    - ´ò¿ªRootÎÄ¼ş¼Ğ              ^|
-echo  ^|     w      - ´ò¿ªhttp://127.0.0.1        ^|
-echo  ^|     re     - ÖØÔØNginx                   ^|
+REM echo  ^|     www    - æ‰“å¼€Rootæ–‡ä»¶å¤¹              ^|
+REM echo  ^|     w      - æ‰“å¼€http://127.0.0.1        ^|
+echo  ^|     re     - é‡è½½Nginx                   ^|
 echo  ^|                                          ^|
-echo  ^|     1      - È«²¿Æô¶¯                    ^|
-echo  ^|     2      - È«²¿Í£Ö¹                    ^|
+echo  ^|     1      - å…¨éƒ¨å¯åŠ¨                    ^|
+echo  ^|     2      - å…¨éƒ¨åœæ­¢                    ^|
 echo  ^|                                          ^|
-echo  ^|     9      - Æô/Í£  nginx                ^|
-echo  ^|     0      - Æô/Í£  php-cgi              ^|
+echo  ^|     9      - å¯/åœ  nginx                ^|
+echo  ^|     0      - å¯/åœ  php-cgi              ^|
 echo  ^|__________________________________________^|
 echo.
 
 
 :input
 set input=
-set /p input=  ÊäÈëÖ¸Áî ^>
+set /p input=  è¾“å…¥æŒ‡ä»¤ ^>
 
 if "%input%"=="re" call :reload
 
@@ -89,11 +91,10 @@ if "%input%"=="0" call :turn_phpcgi, %phpcgiRunning%
 goto menu
 
 :reload
-ECHO ÕıÔÚÖØÆô nginx...  
+ECHO æ­£åœ¨é‡å¯ nginx...  
 call :nginx_stop
 call :nginx_start
-echo Íê³É..
-@ping 127.0.0.1 -n 2 >nul
+echo å®Œæˆ..
 goto menu
 
 :end
@@ -108,16 +109,16 @@ start %www%
 goto :eof
 
 :phpcgi
-ECHO ÕıÔÚÆô¶¯ PHP FastCGI...
-echo %php_home%/php-cgi.exe -b 127.0.0.1:%php_port% -c %php_home%/php.ini
-call %php_home%/php-cgi.exe -b 127.0.0.1:%php_port% -c %php_home%/php.ini
+ECHO æ­£åœ¨å¯åŠ¨ PHP FastCGI...
+echo %php_home%\php-cgi.exe -b 127.0.0.1:%php_port% -c %php_home%\php.ini
+call %php_home%\php-cgi.exe -b 127.0.0.1:%php_port% -c %php_home%\php.ini
 pause
 goto :eof
 
 :nginx
-ECHO ÕıÔÚÆô¶¯ PHP FastCGI...
-echo %nginx_home%/nginx.exe
-call %nginx_home%/nginx.exe
+ECHO æ­£åœ¨å¯åŠ¨ PHP FastCGI...
+echo %nginx_home%\nginx.exe
+call %nginx_home%\nginx.exe
 pause
 goto :eof
 
@@ -139,49 +140,33 @@ if "%1" NEQ "" (
 goto :eof
 
 :start_all
-ECHO ÕıÔÚÆô¶¯ nginx...
 call :nginx_start
-ECHO ÕıÔÚÆô¶¯ PHP FastCGI...
 call :php_cgi_start
-echo Íê³É.
-@ping 127.0.0.1 -n 2 >nul
 goto :eof
 
 :stop_all
-ECHO ÕıÔÚÍ£Ö¹ nginx...  
 call :nginx_stop
-ECHO ÕıÔÚÍ£Ö¹ PHP FastCGI...
 call :php_cgi_stop
-echo Íê³É..
-@ping 127.0.0.1 -n 2 >nul
 goto :eof
 
 
 
 :nginx_start
-echo ÕıÔÚÆô¶¯ nginx...
-RunHiddenConsole %nginx_home%/nginx.exe
-echo Íê³É..
-@ping 127.0.0.1 -n 2 >nul
+echo æ­£åœ¨å¯åŠ¨ nginx...
+RunHiddenConsole %nginx_home%\nginx.exe
 goto :eof
 
 :php_cgi_start
-echo ÕıÔÚÆô¶¯ PHP FastCGI...
-RunHiddenConsole %php_home%/php-cgi.exe -b 127.0.0.1:%php_port% -c %php_home%/php.ini
-echo Íê³É..
-@ping 127.0.0.1 -n 2 >nul
+echo æ­£åœ¨å¯åŠ¨ PHP FastCGI...
+RunHiddenConsole %php_home%\php-cgi.exe -b 127.0.0.1:%php_port% -c %php_home%\php.ini
 goto :eof
 
 :nginx_stop
-echo ÕıÔÚÍ£Ö¹ nginx...  
+echo æ­£åœ¨åœæ­¢ nginx...  
 TASKKILL /F /IM nginx.exe
-echo Íê³É..
-@ping 127.0.0.1 -n 2 >nul
 goto :eof
 
 :php_cgi_stop
-echo ÕıÔÚÍ£Ö¹ PHP FastCGI...
+echo æ­£åœ¨åœæ­¢ PHP FastCGI...
 TASKKILL /F /IM php-cgi.exe
-echo Íê³É..
-@ping 127.0.0.1 -n 2 >nul
 goto :eof
