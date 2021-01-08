@@ -1,14 +1,14 @@
 @echo off
 
 REM 设置Nginx和PHP-CGI的目录和www文件夹
-SET php_home=.\php-7.4.8-nts-Win32-vc15-x64
+SET php_home=.\php-7.4.13-nts-Win32-vc15-x64
 SET nginx_home=.
 SET www=.\html
 SET php_port=9000
 
 REM 请不要修改这个项目
 SET tempFile=.temp.txt
-SET version=1.3.3
+SET version=1.4
 
 REM parameter handle
 if "%1"=="start" (	
@@ -38,38 +38,38 @@ set /p nginxRunning=<%tempFile%
 del %tempFile%
 
 
-echo   __________________________________________
-echo  ^|                                          ^|
+echo   _______________________________________
+echo  ^|                                       ^|
 
 if "%nginxRunning%" NEQ "" (
-	echo  ^|      [   NGINX    正在运行  ]            ^|
+	echo  ^|      [   NGINX    正在运行  ]         ^|
 ) else (
-	echo  ^|      [   NGINX    ---       ]            ^|
+	echo  ^|      [   NGINX    ---       ]         ^|
 )
 
 if "%phpcgiRunning%" NEQ "" (
-	echo  ^|      [   PHP-CGI  正在运行  ]            ^|
+	echo  ^|      [   PHP-CGI  正在运行  ]         ^|
 ) else (
-	echo  ^|      [   PHP-CGI  ---       ]            ^|
+	echo  ^|      [   PHP-CGI  ---       ]         ^|
 )
 
-echo  ^|                                          ^|
-REM echo  ^|     www    - 打开Root文件夹              ^|
-REM echo  ^|     w      - 打开http://127.0.0.1        ^|
-echo  ^|     re     - 重载Nginx                   ^|
-echo  ^|                                          ^|
-echo  ^|     1      - 全部启动                    ^|
-echo  ^|     2      - 全部停止                    ^|
-echo  ^|                                          ^|
-echo  ^|     9      - 启/停  nginx                ^|
-echo  ^|     0      - 启/停  php-cgi              ^|
-echo  ^|__________________________________________^|
+echo  ^|                                       ^|
+@REM echo  ^|     www    - 打开Root文件夹           ^|
+@REM echo  ^|     w      - 打开127.0.0.1            ^|
+echo  ^|     re     - 重载Nginx                ^|
+echo  ^|                                       ^|
+echo  ^|     1      - 全部启动                 ^|
+echo  ^|     2      - 全部停止                 ^|
+echo  ^|                                       ^|
+echo  ^|     9      - 启/停  nginx             ^|
+echo  ^|     0      - 启/停  php-cgi           ^|
+echo  ^|_______________________________________^|
 echo.
 
 
 :input
 set input=
-set /p input=  输入指令 ^>
+set /p input= ^> 
 
 if "%input%"=="re" call :reload
 
