@@ -8,7 +8,7 @@ SET php_port=9000
 
 REM 请不要修改这个项目
 SET tempFile=.temp.txt
-SET version=1.4
+SET version=1.4.1
 
 REM parameter handle
 if "%1"=="start" (	
@@ -58,11 +58,11 @@ echo  ^|                                       ^|
 @REM echo  ^|     w      - 打开127.0.0.1            ^|
 echo  ^|     re     - 重载Nginx                ^|
 echo  ^|                                       ^|
+echo  ^|     0      - 全部停止                 ^|
 echo  ^|     1      - 全部启动                 ^|
-echo  ^|     2      - 全部停止                 ^|
 echo  ^|                                       ^|
-echo  ^|     9      - 启/停  nginx             ^|
-echo  ^|     0      - 启/停  php-cgi           ^|
+echo  ^|     n      - 启/停  nginx             ^|
+echo  ^|     p      - 启/停  php-cgi           ^|
 echo  ^|_______________________________________^|
 echo.
 
@@ -83,10 +83,10 @@ if "%input%"=="www" call :open_root
 if "%input%"=="w" call :open_browser
 
 if "%input%"=="1" call :start_all
-if "%input%"=="2" call :stop_all
+if "%input%"=="0" call :stop_all
 
-if "%input%"=="9"  call :turn_nginx, %nginxRunning%
-if "%input%"=="0" call :turn_phpcgi, %phpcgiRunning%
+if "%input%"=="n"  call :turn_nginx, %nginxRunning%
+if "%input%"=="p" call :turn_phpcgi, %phpcgiRunning%
 
 goto menu
 
